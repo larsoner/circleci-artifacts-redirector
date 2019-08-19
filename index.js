@@ -6,59 +6,26 @@
  * @param {import('probot').Application} app
  */
 module.exports = app => {
-  app.on(['check_suite.requested', 'check_run.rerequested'], start)
-  app.on(['check_run.completed'], stop)
+  app.on(['status'], link)
 
-  async function start (context) {
-    const startTime = new Date()
-
-    // Do stuff
-    const { head_branch: headBranch, head_sha: headSha } = context.payload.check_suite
-    // Probot API note: context.repo() => {username: 'hiimbex', repo: 'testing-things'}
-    return context.github.checks.create(context.repo({
-      name: 'CircleCI Artifacts Redirector',
-      head_branch: headBranch,
-      head_sha: headSha,
-      started_at: startTime,
-      completed_at: new Date(),
-      status: 'queued',
-      conclusion: 'neutral',
-      output: {
-        title: 'Artifacts',
-        summary: 'Waiting for CircleCI run to complete'
-      }
+  /* This is annoying because CircleCI does not use the App API we need to monitor statuses */
+  async function link (context) {
+    if (context.payload.context !== 'ci/circleci: build' || context.payload.state === 'pending') {
+      return
+    }
+    const state = (context.payload.state === 'success') ? 'success' : 'neutral'
+    const buildId = context.payload.target_url.split('?')[0].split('/').slice(-1)[0]
+    const repoId = context.payload.repository.id
+    const url = 'https://' + buildId + '-' + repoId + '-gh.circle-artifacts.com/0/test_artifacts/README.md'
+    // Create the status
+    return context.github.repos.createStatus(context.repo({
+      sha: context.payload.sha,
+      state: state,
+      target_url: url,
+      description: 'CircleCI artifacts link',
+      context: 'ci/circleci: artifacts'
     }))
   }
-
-    async function stop (context) {
-      if ( context.name != "CircleCI" ) {
-        return
-      }
-      const startTime = new Date()
-      if (context.conclusion == 'success') {
-        conclusion = 'success'
-      }
-      else {
-        conclusion = 'neutral'
-      }
-      url = context.check_suite.url
-      const { head_branch: headBranch, head_sha: headSha } = context.payload.check_suite
-      // Probot API note: context.repo() => {username: 'hiimbex', repo: 'testing-things'}
-      return context.github.checks.create(context.repo({
-        name: 'CircleCI Artifacts Redirector',
-        head_branch: headBranch,
-        head_sha: headSha,
-        started_at: startTime,
-        completed_at: new Date(),
-        status: 'completed',
-        conclusion: conclusion,
-        details_url: url,
-        output: {
-          title: 'Artifacts',
-          summary: 'CircleCI run complete'
-        }
-      }))
-    }
 
   // For more information on building apps:
   // https://probot.github.io/docs/

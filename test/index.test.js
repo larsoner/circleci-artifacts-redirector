@@ -3,8 +3,8 @@ const nock = require('nock')
 const myProbotApp = require('..')
 const { Probot } = require('probot')
 // Requiring our fixtures
-const checkSuitePayload = require('./fixtures/check_suite.requested')
-const checkRunSuccess = require('./fixtures/check_run.created')
+const statusPayload = require('./fixtures/status')
+const checkRunComplete = require('./fixtures/response')
 
 nock.disableNetConnect()
 
@@ -26,21 +26,15 @@ describe('My Probot app', () => {
       .reply(200, { token: 'test' })
 
     nock('https://api.github.com')
-      .post('/repos/hiimbex/testing-things/check-runs', (body) => {
+      .post('/repos/larsoner/circleci-artifacts-redirector/fix', (body) => {
         body.started_at = '2018-10-05T17:35:21.594Z'
         body.completed_at = '2018-10-05T17:35:53.683Z'
-        expect(body).toMatchObject(checkRunSuccess)
+        expect(body).toMatchObject(checkRunComplete)
         return true
       })
       .reply(200)
 
     // Receive a webhook event
-    await probot.receive({ name: 'check_suite', payload: checkSuitePayload })
+    await probot.receive({ name: 'check_suite', payload: statusPayload })
   })
 })
-
-// For more information about testing with Jest see:
-// https://facebook.github.io/jest/
-
-// For more information about testing with Nock see:
-// https://github.com/nock/nock
