@@ -14,7 +14,7 @@ jobs:
       - run: npm install
       - run: |
           mkdir ~/my_test_artifacts
-          cp ~/repo/README.md ~/my_test_artifacts
+          echo "This should point to root_artifact.md for commit ${CIRCLE_SHA1}" > ~/my_test_artifacts/root_artifact.md
       - save_cache:
           paths:
             - node_modules
