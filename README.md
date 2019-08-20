@@ -13,3 +13,5 @@ Currently has (known) serious limitations:
 - Only pays attention to CircleCI jobs named `build`
 
 Eventually this stuff can all probably be fixed by a bit of work and addition of customization options. For example parsing a YAML file or something else (`setup.cfg`) to get the path would be a good start rather than just using the content of `.circleci/artifact_path` as the filename to use.
+
+This app was developed using [PROBOT](https://probot.github.io) and is deployed via [Heroku](https://heroku.com).
