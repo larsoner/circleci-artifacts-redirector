@@ -1,6 +1,6 @@
 # circleci-artifacts-redirector
 
-GitHub app to add a GitHub status link to a CircleCI artifact.
+[GitHub app](https://github.com/apps/circleci-artifacts-redirector/) to add a GitHub status link to a CircleCI artifact.
 
 To use this application, add a `.circleci/artifact_path` file whose only
 contents are the artifact path. This is typically whatever follows the
