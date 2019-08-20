@@ -1,13 +1,12 @@
 {
-  "name": "My app!",
+  "name": "CircleCI Artifacts Redirector",
   "head_branch": "hiimbex-patch-46",
   "head_sha": "50e5628cda538bcbb6f3fec3edebe4bb5afb3891",
-  "status": "completed",
+  "status": "in_progress",
   "started_at": "2018-10-05T17:35:21.594Z",
-  "conclusion": "success",
   "completed_at": "2018-10-05T17:35:53.683Z",
   "output": {
-    "title": "Probot check!",
-    "summary": "The check has passed!"
+    "title": "Waiting for CircleCI",
+    "summary": "Waiting for CircleCI run to complete to get Artifacts URL."
   }
 }
