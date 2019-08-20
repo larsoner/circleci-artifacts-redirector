@@ -10,7 +10,7 @@ module.exports = app => {
   app.on(['status'], link)
 
   async function link (context) {
-    if (context.payload.context !== 'ci/circleci: build' || context.payload.state === 'pending') {
+    if (context.payload.context !== 'ci/circleci: build_docs' || context.payload.state === 'pending') {
       context.log('Ignoring:')
       context.log(context.payload.context)
       context.log(context.payload.state)
