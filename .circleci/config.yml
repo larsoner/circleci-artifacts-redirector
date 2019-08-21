@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_docs:
     docker:
       - image: circleci/node:lts
     working_directory: ~/repo
@@ -23,3 +23,9 @@ jobs:
       - store_artifacts:
           path: ~/my_test_artifacts
           destination: test_artifacts
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - build_docs

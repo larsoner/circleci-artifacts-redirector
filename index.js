@@ -10,10 +10,12 @@ module.exports = app => {
   app.on(['status'], link)
 
   async function link (context) {
-    if (context.payload.context !== 'ci/circleci: build_docs' || context.payload.state === 'pending') {
-      context.log('Ignoring:')
-      context.log(context.payload.context)
-      context.log(context.payload.state)
+    if (['ci/circleci: build_docs', 'ci/circleci: doc', 'ci/circleci: build'].indexOf(context.payload.context) < 0) {
+      context.log('Ignoring context ' + context.payload.context)
+      return
+    }
+    if (context.payload.state === 'pending') {
+      context.log('Ignoring pending ' + context.payload.context)
       return
     }
     context.log('Processing:')
@@ -44,7 +46,7 @@ module.exports = app => {
       state: state,
       target_url: url,
       description: 'Link to ' + path,
-      context: 'ci/circleci: artifact'
+      context: context.payload.context + ' artifact'
     }))
   }
 }
