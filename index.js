@@ -26,7 +26,7 @@ module.exports = app => {
     var path = ''
     try {
       const repoData = await context.github.repos.getContents(context.repo({ ref: context.payload.sha, path: filepath }))
-      path = Buffer.from(repoData.data.content, 'base64').toString('utf8')
+      path = Buffer.from(repoData.data.content, 'base64').toString('utf8').trim()
     } catch (error) {
       if (error.status === 404) {
         throw new Error(`404 ERROR: file '${filepath}' not found`)
