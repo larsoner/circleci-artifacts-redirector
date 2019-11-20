@@ -35,7 +35,7 @@ module.exports = app => {
       }
     }
     // Set the new status
-    const state = (context.payload.state === 'success') ? 'success' : 'neutral'
+    const state = context.payload.state
     const buildId = context.payload.target_url.split('?')[0].split('/').slice(-1)[0]
     const repoId = context.payload.repository.id
     const url = 'https://' + buildId + '-' + repoId + '-gh.circle-artifacts.com/' + path
