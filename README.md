@@ -2,11 +2,11 @@
 
 [GitHub app](https://github.com/apps/circleci-artifacts-redirector/) to add a GitHub status link to a CircleCI artifact.
 
-> **NOTE**: A perhaps more future-proof version of this is available as
-> a GitHub Action:
+> **NOTE**: A more future-proof version of this is available as a GitHub Action:
 >
 >    https://github.com/larsoner/circleci-artifacts-redirector-action
 >
+> This version is **deprecated**!
 
 To use this application, add a `.circleci/artifact_path` file whose only
 contents are the artifact path. This is typically whatever follows the
